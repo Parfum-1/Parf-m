@@ -4,6 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Misi’s Exclusive Parfümök — Legjobb Minöség</title>
+
+    <!-- SEO Meta Adatok -->
+    <meta name="description" content="Misi’s Exclusive Parfümök — Prémium minőségű női, férfi, unisex és luxus illatok széles választéka a legkedvezőbb áron.">
+    <meta name="keywords" content="parfüm, exclusive parfüm, női parfüm, férfi parfüm, unisex parfüm, luxus illat, Misi parfüm">
+    <meta name="author" content="Misi’s Exclusive Parfümök">
+
+    <!-- Open Graph / Facebook Meta Adatok -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Misi’s Exclusive Parfümök — Legjobb Minöség">
+    <meta property="og:description" content="Az elegancia nem feltűnés, hanem az emlékezetben maradás művészete. Fedezd fel exkluzív illatkollekciónkat!">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1547887537-6158d64c35b3?q=80&w=1200&auto=format&fit=crop">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
@@ -56,7 +68,7 @@
 
         a { color: inherit; text-decoration: none; transition: var(--transition-smooth); }
 
-        /* Header Stilag */
+        /* Header Stílus */
         header {
             position: fixed;
             top: 0;
@@ -122,6 +134,20 @@
 
         nav a:hover { color: #fff; }
         nav a:hover::after { width: 100%; }
+
+        /* Mobil Hamburger Ikon */
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            color: var(--accent-gold);
+            cursor: pointer;
+            z-index: 1001;
+            transition: var(--transition-smooth);
+        }
+
+        .mobile-toggle:hover {
+            color: #fff;
+        }
 
         /* Hero Section */
         .hero {
@@ -348,6 +374,31 @@
             font-weight: 600;
         }
 
+        /* Rendelés Gomb a Termékkártyán */
+        .order-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 16px;
+            padding: 12px 16px;
+            background: transparent;
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .order-btn:hover {
+            background: var(--accent-gold);
+            color: var(--bg-color);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+        }
+
         /* Közösségi Média Lebegő Konténer */
         .social-floating-container {
             position: fixed;
@@ -469,7 +520,42 @@
         @media (max-width: 768px) {
             header { padding: 15px 20px; }
             header.scrolled { padding: 12px 20px; }
-            nav { display: none; }
+            
+            /* Mobil Hamburger Menü Megjelenítése */
+            .mobile-toggle {
+                display: block;
+            }
+
+            nav {
+                display: flex;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(10, 10, 10, 0.95);
+                backdrop-filter: blur(15px);
+                border-bottom: 1px solid var(--border-color);
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.4s ease-in-out;
+            }
+
+            nav.active {
+                max-height: 300px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                width: 100%;
+                padding: 20px 0;
+                gap: 15px;
+            }
+
+            nav li {
+                width: 100%;
+                text-align: center;
+            }
+
             .hero h1 { font-size: 2.3rem; }
             .hero p { font-size: 0.95rem; }
             section { padding: 60px 20px; }
@@ -508,14 +594,17 @@
 
     <header id="main-header">
         <div class="logo">Misi’s Exclusive Parfümök</div>
-        <nav>
+        <div class="mobile-toggle" onclick="toggleMenu()">
+            <i class="fas fa-bars" id="menu-icon"></i>
+        </div>
+        <nav id="nav-menu">
             <ul>
-                <li><a href="#home">Kezdőlap</a></li>
-                <li><a href="#women">Női</a></li>
-                <li><a href="#men">Férfi</a></li>
-                <li><a href="#unisex">Unisex</a></li>
-                <li><a href="#luxury" style="color: var(--accent-gold);">Luxus</a></li>
-                <li><a href="admin.html" style="opacity: 0.7;"><i class="fas fa-cog"></i> Admin</a></li>
+                <li><a href="#home" onclick="closeMenu()">Kezdőlap</a></li>
+                <li><a href="#women" onclick="closeMenu()">Női</a></li>
+                <li><a href="#men" onclick="closeMenu()">Férfi</a></li>
+                <li><a href="#unisex" onclick="closeMenu()">Unisex</a></li>
+                <li><a href="#luxury" onclick="closeMenu()" style="color: var(--accent-gold);">Luxus</a></li>
+                <li><a href="admin.html" onclick="closeMenu()" style="opacity: 0.7;"><i class="fas fa-cog"></i> Admin</a></li>
             </ul>
         </nav>
     </header>
@@ -613,6 +702,11 @@
 
             Object.keys(data).forEach(key => {
                 const item = data[key];
+                
+                // Messenger üzenet link generálása a termék nevével
+                const orderMessage = encodeURIComponent(`Szia! Szeretnék érdeklődni / rendelni ebből a parfümőből: ${item.name}`);
+                const messengerUrl = `https://www.facebook.com/messages/t/61572601478957?text=${orderMessage}`;
+
                 const card = `
                     <div class="product-card">
                         <div>
@@ -624,19 +718,25 @@
                             <p class="notes">${item.notes || ''}</p>
                         </div>
                         
-                        <div class="prices-container">
-                            <div class="price-box">
-                                <span class="size">30 ml</span>
-                                <span class="amount">${item.price30 || '-'} Ft</span>
+                        <div>
+                            <div class="prices-container">
+                                <div class="price-box">
+                                    <span class="size">30 ml</span>
+                                    <span class="amount">${item.price30 || '-'} Ft</span>
+                                </div>
+                                <div class="price-box">
+                                    <span class="size">50 ml</span>
+                                    <span class="amount">${item.price50 || '-'} Ft</span>
+                                </div>
+                                <div class="price-box">
+                                    <span class="size">70 ml</span>
+                                    <span class="amount">${item.price70 || '-'} Ft</span>
+                                </div>
                             </div>
-                            <div class="price-box">
-                                <span class="size">50 ml</span>
-                                <span class="amount">${item.price50 || '-'} Ft</span>
-                            </div>
-                            <div class="price-box">
-                                <span class="size">70 ml</span>
-                                <span class="amount">${item.price70 || '-'} Ft</span>
-                            </div>
+
+                            <a href="${messengerUrl}" target="_blank" rel="noopener noreferrer" class="order-btn">
+                                <i class="fab fa-facebook-messenger"></i> Rendelés Messengeren
+                            </a>
                         </div>
                     </div>
                 `;
@@ -648,7 +748,7 @@
         });
     </script>
 
-    <!-- Képnagyító & Header Scroll Logika -->
+    <!-- Képnagyító, Header Scroll & Mobil Menü Logika -->
     <script>
         function openModal(imgSrc) {
             const modal = document.getElementById('imageModal');
@@ -678,6 +778,31 @@
                 header.classList.remove('scrolled');
             }
         });
+
+        // Mobil Menü Nyitás / Zárás
+        function toggleMenu() {
+            const nav = document.getElementById('nav-menu');
+            const icon = document.getElementById('menu-icon');
+            nav.classList.toggle('active');
+            
+            if (nav.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        }
+
+        function closeMenu() {
+            const nav = document.getElementById('nav-menu');
+            const icon = document.getElementById('menu-icon');
+            if (nav.classList.contains('active')) {
+                nav.classList.remove('active');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        }
     </script>
 </body>
 </html>
