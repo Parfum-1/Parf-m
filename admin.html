@@ -118,6 +118,11 @@
             display: none;
         }
 
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
         .btn-add {
             width: 100%; padding: 14px; background: var(--accent-gold);
             color: var(--bg-color); border: none; text-transform: uppercase;
@@ -125,6 +130,15 @@
         }
 
         .btn-add:hover { opacity: 0.9; }
+
+        .btn-cancel {
+            width: 30%; padding: 14px; background: #444;
+            color: #fff; border: none; text-transform: uppercase;
+            letter-spacing: 1px; font-weight: 600; cursor: pointer;
+            display: none;
+        }
+
+        .btn-cancel:hover { background: #555; }
 
         .product-item {
             display: flex; align-items: center; justify-content: space-between;
@@ -136,6 +150,19 @@
         .product-info { display: flex; align-items: center; flex-grow: 1; }
         .product-details h4 { font-family: var(--font-serif); font-size: 1.2rem; }
         .product-details p { font-size: 0.8rem; color: var(--text-secondary); }
+
+        .action-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-edit {
+            background: #d4af37; color: #000; border: none;
+            padding: 8px 15px; cursor: pointer; font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .btn-edit:hover { background: #e5c158; }
 
         .btn-delete {
             background: #a32a2a; color: #fff; border: none;
@@ -173,8 +200,10 @@
             </div>
 
             <div class="admin-card">
-                <h2 style="font-family: var(--font-serif); margin-bottom: 20px; font-weight: 400;">Új Parfüm Hozzáadása</h2>
+                <h2 id="form-title" style="font-family: var(--font-serif); margin-bottom: 20px; font-weight: 400;">Új Parfüm Hozzáadása</h2>
                 <form id="add-perfume-form">
+                    <input type="hidden" id="edit-id" value="">
+
                     <div class="form-group">
                         <label for="name">Parfüm Neve</label>
                         <input type="text" id="name" required placeholder="pl. Royal Amber">
@@ -207,8 +236,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="price70">Ár — 100ml (Ft)</label>
-                            <input type="text" id="price70" required placeholder="52.000">
+                            <label for="price100">Ár — 100ml (Ft)</label>
+                            <input type="text" id="price100" placeholder="68.000">
                         </div>
                     </div>
 
@@ -230,7 +259,10 @@
                         <input type="text" id="notes" placeholder="pl. Jázmin, vanília, szantálfa">
                     </div>
 
-                    <button type="submit" class="btn-add" id="submit-btn">Parfüm Mentése</button>
+                    <div class="btn-group">
+                        <button type="submit" class="btn-add" id="submit-btn">Parfüm Mentése</button>
+                        <button type="button" class="btn-cancel" id="cancel-btn" onclick="resetForm()">Mégse</button>
+                    </div>
                 </form>
             </div>
 
@@ -242,7 +274,7 @@
     <!-- Firebase SDK (Realtime Database) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDhgS9xqcRYyRVrGd_Rn3_6EXJwjCXAAtY",
@@ -281,6 +313,8 @@
         // Legördülő menü feltöltése a képekkel
         function populateImageDropdown() {
             const select = document.getElementById('imgSelect');
+            // Tisztítás az újratöltés megelőzésére
+            select.innerHTML = '<option value="">-- Válassz képet a kepek/ mappából --</option>';
             imageFiles.forEach(file => {
                 const opt = document.createElement('option');
                 opt.value = `kepek/${file}`;
@@ -333,6 +367,9 @@
             return labels[cat] || cat;
         }
 
+        // Globális objektum az elemek gyors eléréséhez szerkesztésnél
+        let loadedPerfumes = {};
+
         function listenToProducts() {
             const list = document.getElementById('admin-product-list');
             const perfumesRef = ref(database, 'perfumes');
@@ -340,6 +377,7 @@
             onValue(perfumesRef, (snapshot) => {
                 list.innerHTML = '';
                 const data = snapshot.val();
+                loadedPerfumes = data || {};
 
                 if (!data) {
                     list.innerHTML = '<p style="color: var(--text-secondary);">Még nincs egyetlen parfüm sem az adatbázisban.</p>';
@@ -355,43 +393,89 @@
                             <img src="${item.img}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/60?text=Hiányzik'">
                             <div class="product-details">
                                 <h4>${item.name} (${getCategoryLabel(item.category)})</h4>
-                                <p>30ml: ${item.price30} Ft | 50ml: ${item.price50} Ft | 70ml: ${item.price70} Ft</p>
+                                <p>30ml: ${item.price30 || '-'} Ft | 50ml: ${item.price50 || '-'} Ft | 70ml: ${item.price70 || '-'} Ft | 100ml: ${item.price100 || '-'} Ft</p>
                                 <p style="font-style: italic; color: #777;">${item.notes || ''}</p>
                             </div>
                         </div>
-                        <button class="btn-delete" onclick="deletePerfume('${key}')"><i class="fas fa-trash"></i> Törlés</button>
+                        <div class="action-btns">
+                            <button class="btn-edit" onclick="editPerfume('${key}')"><i class="fas fa-edit"></i> Módosítás</button>
+                            <button class="btn-delete" onclick="deletePerfume('${key}')"><i class="fas fa-trash"></i> Törlés</button>
+                        </div>
                     `;
                     list.appendChild(itemEl);
                 });
             });
         }
 
+        // Parfüm betöltése szerkesztésre
+        window.editPerfume = function(key) {
+            const perfume = loadedPerfumes[key];
+            if (!perfume) return;
+
+            document.getElementById('edit-id').value = key;
+            document.getElementById('name').value = perfume.name || '';
+            document.getElementById('category').value = perfume.category || 'women';
+            document.getElementById('price30').value = perfume.price30 || '';
+            document.getElementById('price50').value = perfume.price50 || '';
+            document.getElementById('price70').value = perfume.price70 || '';
+            document.getElementById('price100').value = perfume.price100 || '';
+            document.getElementById('imgSelect').value = perfume.img || '';
+            document.getElementById('notes').value = perfume.notes || '';
+
+            previewSelectedImage(perfume.img);
+
+            document.getElementById('form-title').innerText = 'Parfüm Módosítása';
+            document.getElementById('submit-btn').innerText = 'Módosítások Mentése';
+            document.getElementById('cancel-btn').style.display = 'block';
+
+            // Gördülés a formhoz
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Form visszaállítása alaphelyzetbe
+        window.resetForm = function() {
+            document.getElementById('add-perfume-form').reset();
+            document.getElementById('edit-id').value = '';
+            document.getElementById('form-title').innerText = 'Új Parfüm Hozzáadása';
+            document.getElementById('submit-btn').innerText = 'Parfüm Mentése';
+            document.getElementById('cancel-btn').style.display = 'none';
+            document.getElementById('imgPreview').style.display = 'none';
+            document.getElementById('previewText').textContent = '';
+        }
+
         document.getElementById('add-perfume-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const submitBtn = document.getElementById('submit-btn');
+            const editId = document.getElementById('edit-id').value;
+
             submitBtn.innerText = 'Mentés...';
             submitBtn.disabled = true;
 
-            const newPerfume = {
+            const perfumeData = {
                 name: document.getElementById('name').value,
                 category: document.getElementById('category').value,
                 price30: document.getElementById('price30').value,
                 price50: document.getElementById('price50').value,
                 price70: document.getElementById('price70').value,
+                price100: document.getElementById('price100').value,
                 img: document.getElementById('imgSelect').value,
                 notes: document.getElementById('notes').value
             };
 
             try {
-                await push(ref(database, 'perfumes'), newPerfume);
-                this.reset();
-                document.getElementById('imgPreview').style.display = 'none';
-                document.getElementById('previewText').textContent = '';
-                alert('Parfüm sikeresen mentve!');
+                if (editId) {
+                    // Módosítás létező elemnél
+                    await update(ref(database, 'perfumes/' + editId), perfumeData);
+                    alert('Parfüm sikeresen frissítve!');
+                } else {
+                    // Új elem hozzáadása
+                    await push(ref(database, 'perfumes'), perfumeData);
+                    alert('Parfüm sikeresen mentve!');
+                }
+                resetForm();
             } catch (error) {
                 alert('Hiba mentéskor: ' + error.message);
             } finally {
-                submitBtn.innerText = 'Parfüm Mentése';
                 submitBtn.disabled = false;
             }
         });
@@ -406,5 +490,7 @@
             }
         }
     </script>
+</body>
+</html>
 </body>
 </html>
