@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>L'Élixir — Haute Parfumerie</title>
-    <!-- Google Betűtípusok & FontAwesome Ikonok -->
+    <title>Misi’s Exclusive Parfümök — Haute Parfumerie</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
@@ -22,11 +21,7 @@
             --font-sans: 'Montserrat', sans-serif;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: var(--bg-color);
@@ -37,18 +32,13 @@
             overflow-x: hidden;
         }
 
-        a {
-            color: inherit;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
+        a { color: inherit; text-decoration: none; transition: all 0.3s ease; }
 
-        /* Navigáció */
         header {
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 25px 50px;
+            padding: 20px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -60,33 +50,30 @@
 
         .logo {
             font-family: var(--font-serif);
-            font-size: 1.8rem;
-            letter-spacing: 4px;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
             text-transform: uppercase;
             color: var(--accent-gold);
-            font-weight: 300;
+            font-weight: 400;
         }
 
         nav ul {
             display: flex;
             list-style: none;
-            gap: 35px;
+            gap: 25px;
             align-items: center;
         }
 
         nav a {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 2px;
             color: var(--text-secondary);
             font-weight: 300;
         }
 
-        nav a:hover {
-            color: var(--accent-gold);
-        }
+        nav a:hover { color: var(--accent-gold); }
 
-        /* Hero */
         .hero {
             height: 100vh;
             display: flex;
@@ -98,17 +85,16 @@
             padding: 0 20px;
         }
 
-        .hero-content {
-            max-width: 800px;
-        }
+        .hero-content { max-width: 900px; }
 
         .hero h1 {
             font-family: var(--font-serif);
-            font-size: 4rem;
+            font-size: 3.5rem;
             font-weight: 300;
-            letter-spacing: 6px;
+            letter-spacing: 5px;
             margin-bottom: 15px;
             line-height: 1.2;
+            color: #fff;
         }
 
         .hero p {
@@ -119,18 +105,19 @@
             letter-spacing: 2px;
         }
 
+        .btn-group { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+
         .btn {
             display: inline-block;
-            padding: 14px 38px;
+            padding: 12px 24px;
             border: 1px solid var(--accent-gold);
             color: var(--accent-gold);
             text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 3px;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
             background: transparent;
             cursor: pointer;
             transition: all 0.4s ease;
-            margin: 5px;
         }
 
         .btn:hover {
@@ -139,16 +126,15 @@
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
         }
 
-        /* Szekciók */
         section {
-            padding: 100px 50px;
+            padding: 90px 40px;
             max-width: 1300px;
             margin: 0 auto;
         }
 
         .section-title {
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 50px;
         }
 
         .section-title h2 {
@@ -166,17 +152,16 @@
             margin: 15px auto 0;
         }
 
-        /* Termékek */
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 35px;
         }
 
         .product-card {
             background: var(--card-bg);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 25px;
+            padding: 22px;
             text-align: center;
             transition: transform 0.4s ease, border-color 0.4s ease;
         }
@@ -188,20 +173,18 @@
 
         .product-img {
             width: 100%;
-            height: 350px;
+            height: 320px;
             object-fit: cover;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             filter: brightness(0.9);
             transition: filter 0.4s ease;
         }
 
-        .product-card:hover .product-img {
-            filter: brightness(1);
-        }
+        .product-card:hover .product-img { filter: brightness(1); }
 
         .product-card h3 {
             font-family: var(--font-serif);
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 400;
             margin-bottom: 8px;
             letter-spacing: 2px;
@@ -210,82 +193,104 @@
         .product-card .notes {
             font-size: 0.8rem;
             color: var(--text-secondary);
-            margin-bottom: 15px;
+            margin-bottom: 18px;
             font-style: italic;
+            min-height: 38px;
         }
 
-        .product-card .price {
-            font-size: 1.1rem;
-            color: var(--accent-gold);
+        .prices-container {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            padding: 10px 5px;
+            margin-top: 10px;
+        }
+
+        .price-box {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .price-box .size {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
             letter-spacing: 1px;
         }
 
-        /* LÜKTETŐ FACEBOOK WIDGET A JOBB ALSÓ SAROKBAN */
-        .fb-contact-widget {
+        .price-box .amount {
+            font-size: 0.85rem;
+            color: var(--accent-gold);
+            font-weight: 500;
+        }
+
+        /* Közösségi Média Lebegő Konténer */
+        .social-floating-container {
             position: fixed;
             bottom: 30px;
             right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 2000;
+        }
+
+        .social-widget {
             display: flex;
             align-items: center;
             gap: 12px;
             background: rgba(20, 20, 20, 0.95);
             border: 1px solid var(--accent-gold);
-            padding: 10px 18px 10px 12px;
+            padding: 8px 16px 8px 10px;
             border-radius: 50px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-            z-index: 2000;
             backdrop-filter: blur(5px);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, border-color 0.3s ease;
         }
 
-        .fb-contact-widget:hover {
-            transform: scale(1.05);
-        }
+        .social-widget:hover { transform: translateX(-5px); }
 
-        .fb-floating-btn {
-            width: 45px;
-            height: 45px;
-            background-color: var(--accent-gold);
+        .social-btn {
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--bg-color);
-            font-size: 1.4rem;
-            animation: pulse-gold 2s infinite;
+            color: #fff;
+            font-size: 1.1rem;
         }
 
-        .fb-text {
-            font-size: 0.8rem;
+        .fb-btn {
+            background-color: #1877f2;
+        }
+
+        .tiktok-btn {
+            background-color: #000;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #ff0050;
+        }
+
+        .social-text {
+            font-size: 0.75rem;
             color: var(--text-primary);
             font-weight: 400;
-            letter-spacing: 0.5px;
             line-height: 1.2;
         }
 
-        .fb-text span {
+        .social-text span {
             display: block;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--accent-gold);
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-top: 2px;
-        }
-
-        @keyframes pulse-gold {
-            0% {
-                box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.8);
-            }
-            70% {
-                box-shadow: 0 0 0 15px rgba(212, 175, 55, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
-            }
+            margin-top: 1px;
         }
 
         footer {
-            padding: 50px;
+            padding: 40px;
             text-align: center;
             border-top: 1px solid var(--border-color);
             color: var(--text-secondary);
@@ -293,120 +298,171 @@
         }
 
         @media (max-width: 768px) {
-            header { padding: 20px; }
+            header { padding: 15px 20px; }
             nav { display: none; }
-            .hero h1 { font-size: 2.5rem; }
+            .hero h1 { font-size: 2.2rem; }
             section { padding: 60px 20px; }
-            .fb-text { display: none; } /* Mobilon csak az ikon látszódjon a hely miatt */
-            .fb-contact-widget { padding: 5px; border-radius: 50%; }
+            .social-text { display: none; }
+            .social-widget { padding: 4px; border-radius: 50%; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Villogó Facebook Widget (Átirányítással és Szöveggel) -->
-    <!-- Cseréld ki a href-et a saját Facebook profilod/oldalad linkjére! -->
-    <a href="https://www.facebook.com/sajat-oldalad" target="_blank" rel="noopener noreferrer" class="fb-contact-widget">
-        <div class="fb-floating-btn">
-            <i class="fab fa-facebook-f"></i>
-        </div>
-        <div class="fb-text">
-            Itt keress vásárlással kapcsolatban
-            <span>Kattints a kapcsolatfelvételhez &rarr;</span>
-        </div>
-    </a>
+    <!-- Lebegő közösségi gombok -->
+    <div class="social-floating-container">
+        <!-- Facebook gomb -->
+        <a href="https://www.facebook.com/sajat-oldalad" target="_blank" rel="noopener noreferrer" class="social-widget">
+            <div class="social-btn fb-btn">
+                <i class="fab fa-facebook-f"></i>
+            </div>
+            <div class="social-text">
+                Facebook oldalunk
+                <span>Ugrás a profilra &rarr;</span>
+            </div>
+        </a>
 
-    <!-- Navigáció -->
+        <!-- TikTok gomb -->
+        <a href="https://www.tiktok.com/@sajat_tiktok_profilod" target="_blank" rel="noopener noreferrer" class="social-widget">
+            <div class="social-btn tiktok-btn">
+                <i class="fab fa-tiktok"></i>
+            </div>
+            <div class="social-text">
+                TikTok csatornánk
+                <span>Ugrás a profilra &rarr;</span>
+            </div>
+        </a>
+    </div>
+
     <header>
-        <div class="logo">L'Élixir</div>
+        <div class="logo">Misi’s Exclusive Parfümök</div>
         <nav>
             <ul>
                 <li><a href="#home">Kezdőlap</a></li>
-                <li><a href="#women">Női Illatok</a></li>
-                <li><a href="#men">Férfi Illatok</a></li>
-                <li><a href="admin.html" style="color: var(--accent-gold);"><i class="fas fa-cog"></i> Admin</a></li>
+                <li><a href="#women">Női</a></li>
+                <li><a href="#men">Férfi</a></li>
+                <li><a href="#unisex">Unisex</a></li>
+                <li><a href="#luxury" style="color: var(--accent-gold);">Luxus</a></li>
+                <li><a href="admin.html" style="opacity: 0.7;"><i class="fas fa-cog"></i> Admin</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- Hero -->
     <div class="hero" id="home">
         <div class="hero-content">
-            <h1>L'ÉLIXIR DE PARFUM</h1>
+            <h1>MISI’S EXCLUSIVE PARFÜMÖK</h1>
             <p>Az elegancia nem feltűnés, hanem az emlékezetben maradás művészete.</p>
-            <a href="#women" class="btn">Női Kollekció</a>
-            <a href="#men" class="btn">Férfi Kollekció</a>
+            <div class="btn-group">
+                <a href="#women" class="btn">Női</a>
+                <a href="#men" class="btn">Férfi</a>
+                <a href="#unisex" class="btn">Unisex</a>
+                <a href="#luxury" class="btn" style="border-color: #fff; color: #fff;">Luxus Kollekció</a>
+            </div>
         </div>
     </div>
 
-    <!-- NŐI ILLATOK -->
     <section id="women">
         <div class="section-title">
             <h2>Női Kollekció</h2>
             <div></div>
         </div>
-        <div class="products-grid" id="women-products">
-            <!-- Dinamikusan betöltött termékek -->
-        </div>
+        <div class="products-grid" id="women-products"></div>
     </section>
 
-    <!-- FÉRFI ILLATOK -->
     <section id="men">
         <div class="section-title">
             <h2>Férfi Kollekció</h2>
             <div></div>
         </div>
-        <div class="products-grid" id="men-products">
-            <!-- Dinamikusan betöltött termékek -->
+        <div class="products-grid" id="men-products"></div>
+    </section>
+
+    <section id="unisex">
+        <div class="section-title">
+            <h2>Unisex Kollekció</h2>
+            <div></div>
         </div>
+        <div class="products-grid" id="unisex-products"></div>
+    </section>
+
+    <section id="luxury">
+        <div class="section-title">
+            <h2>Luxus Kollekció</h2>
+            <div></div>
+        </div>
+        <div class="products-grid" id="luxury-products"></div>
     </section>
 
     <footer>
-        <p>&copy; 2026 L'Élixir Haute Parfumerie. Minden jog fenntartva.</p>
+        <p>&copy; 2026 Misi’s Exclusive Parfümök. Minden jog fenntartva.</p>
     </footer>
 
-    <!-- JavaScript a termékek betöltéséhez (LocalStorage alapon) -->
-    <script>
-        // Alapértelmezett termékek, ha még nem adtál hozzá az adminon
-        const defaultPerfumes = [
-            { id: 1, name: "Velours Rose", category: "women", price: "52.000", notes: "Damaszkuszi rózsa, borostyán, bergamott", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?q=80&w=800&auto=format&fit=crop" },
-            { id: 2, name: "Lumière d'Or", category: "women", price: "45.000", notes: "Jázmin, mandarin, fehér pézsma", img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?q=80&w=800&auto=format&fit=crop" },
-            { id: 3, name: "Noir Absolu", category: "men", price: "48.000", notes: "Fekete orchidea, vanília, bőr, szantálfa", img: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=800&auto=format&fit=crop" },
-            { id: 4, name: "Oud Impérial", category: "men", price: "58.000", notes: "Oud fa, füstös ámbra, fűszeres dohány", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=800&auto=format&fit=crop" }
-        ];
+    <!-- Firebase SDK (Realtime Database) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        function loadProducts() {
-            let perfumes = JSON.parse(localStorage.getItem('perfumes'));
-            if (!perfumes || perfumes.length === 0) {
-                perfumes = defaultPerfumes;
-                localStorage.setItem('perfumes', JSON.stringify(perfumes));
+        const firebaseConfig = {
+            apiKey: "AIzaSyDhgS9xqcRYyRVrGd_Rn3_6EXJwjCXAAtY",
+            authDomain: "parfum1-81d06.firebaseapp.com",
+            databaseURL: "https://parfum1-81d06-default-rtdb.firebaseio.com",
+            projectId: "parfum1-81d06",
+            storageBucket: "parfum1-81d06.firebasestorage.app",
+            messagingSenderId: "618373463374",
+            appId: "1:618373463374:web:1f9f06d0f1c0ff3d49b21f",
+            measurementId: "G-T77590LJFZ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        const containers = {
+            women: document.getElementById('women-products'),
+            men: document.getElementById('men-products'),
+            unisex: document.getElementById('unisex-products'),
+            luxury: document.getElementById('luxury-products')
+        };
+
+        const perfumesRef = ref(database, 'perfumes');
+        onValue(perfumesRef, (snapshot) => {
+            Object.values(containers).forEach(c => c.innerHTML = '');
+
+            const data = snapshot.val();
+            if (!data) {
+                Object.values(containers).forEach(c => c.innerHTML = '<p style="color:#777; grid-column:1/-1; text-align:center;">Még nincs termék ebben a kategóriában.</p>');
+                return;
             }
 
-            const womenContainer = document.getElementById('women-products');
-            const menContainer = document.getElementById('men-products');
-
-            womenContainer.innerHTML = '';
-            menContainer.innerHTML = '';
-
-            perfumes.forEach(item => {
+            Object.keys(data).forEach(key => {
+                const item = data[key];
                 const card = `
                     <div class="product-card">
                         <img src="${item.img}" alt="${item.name}" class="product-img" onerror="this.src='https://via.placeholder.com/300x350?text=Kép+nem+található'">
                         <h3>${item.name}</h3>
                         <p class="notes">${item.notes || ''}</p>
-                        <p class="price">${item.price} Ft</p>
+                        
+                        <div class="prices-container">
+                            <div class="price-box">
+                                <span class="size">30 ml</span>
+                                <span class="amount">${item.price30 || '-'} Ft</span>
+                            </div>
+                            <div class="price-box">
+                                <span class="size">50 ml</span>
+                                <span class="amount">${item.price50 || '-'} Ft</span>
+                            </div>
+                            <div class="price-box">
+                                <span class="size">70 ml</span>
+                                <span class="amount">${item.price70 || '-'} Ft</span>
+                            </div>
+                        </div>
                     </div>
                 `;
 
-                if (item.category === 'women') {
-                    womenContainer.innerHTML += card;
-                } else if (item.category === 'men') {
-                    menContainer.innerHTML += card;
+                if (containers[item.category]) {
+                    containers[item.category].innerHTML += card;
                 }
             });
-        }
-
-        window.onload = loadProducts;
+        });
     </script>
 </body>
 </html>
