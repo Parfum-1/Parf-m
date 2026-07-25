@@ -701,55 +701,54 @@
             }
 
             Object.keys(data).forEach(key => {
-                const item = data[key];
-                
-                // Messenger üzenet link generálása a termék nevével
-                const orderMessage = encodeURIComponent(`Szia! Szeretnék érdeklődni / rendelni ebből a parfümőből: ${item.name}`);
-                const messengerUrl = `https://www.facebook.com/messages/t/61572601478957?text=${orderMessage}`;
+    const item = data[key];
+    
+    // A sima profilod linkje (mivel a Messenger nem engedi a sima profilnál az előre megírt szöveget)
+    const messengerUrl = "https://www.facebook.com/profile.php?id=61572601478957";
 
-                const card = `
-                    <div class="product-card">
-                        <div>
-                            <div class="img-container">
-                                <img src="${item.img}" alt="${item.name}" class="product-img" onclick="openModal('${item.img}')" onerror="this.src='https://via.placeholder.com/300x350?text=Kép+nem+található'">
-                                <div class="zoom-hint"><i class="fas fa-search-plus"></i></div>
-                            </div>
-                            <h3>${item.name}</h3>
-                            <p class="notes">${item.notes || ''}</p>
-                        </div>
-                        
-                        <div>
-                            <div class="prices-container">
-                                <div class="price-box">
-                                    <span class="size">30 ml</span>
-                                    <span class="amount">${item.price30 || '-'} Ft</span>
-                                </div>
-                                <div class="price-box">
-                                    <span class="size">50 ml</span>
-                                    <span class="amount">${item.price50 || '-'} Ft</span>
-                                </div>
-                                <div class="price-box">
-                                    <span class="size">70 ml</span>
-                                    <span class="amount">${item.price70 || '-'} Ft</span>
-                                </div>
-                                <div class="price-box">
-                                    <span class="size">100 ml</span>
-                                    <span class="amount">${item.price100 || '-'} Ft</span>
-                                </div>
-                            </div>
-
-                            <a href="${messengerUrl}" target="_blank" rel="noopener noreferrer" class="order-btn">
-                                <i class="fab fa-facebook-messenger"></i> Rendelés Messengeren
-                            </a>
-                        </div>
+    const card = `
+        <div class="product-card">
+            <div>
+                <div class="img-container">
+                    <img src="${item.img}" alt="${item.name}" class="product-img" onclick="openModal('${item.img}')" onerror="this.src='https://via.placeholder.com/300x350?text=Kép+nem+található'">
+                    <div class="zoom-hint"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <h3>${item.name}</h3>
+                <p class="notes">${item.notes || ''}</p>
+            </div>
+            
+            <div>
+                <div class="prices-container">
+                    <div class="price-box">
+                        <span class="size">30 ml</span>
+                        <span class="amount">${item.price30 || '-'} Ft</span>
                     </div>
-                `;
+                    <div class="price-box">
+                        <span class="size">50 ml</span>
+                        <span class="amount">${item.price50 || '-'} Ft</span>
+                    </div>
+                    <div class="price-box">
+                        <span class="size">70 ml</span>
+                        <span class="amount">${item.price70 || '-'} Ft</span>
+                    </div>
+                    <div class="price-box">
+                        <span class="size">100 ml</span>
+                        <span class="amount">${item.price100 || '-'} Ft</span>
+                    </div>
+                </div>
 
-                if (containers[item.category]) {
-                    containers[item.category].innerHTML += card;
-                }
-            });
-        });
+                <a href="${messengerUrl}" target="_blank" rel="noopener noreferrer" class="order-btn">
+                    <i class="fab fa-facebook-messenger"></i> Rendelés Messengeren
+                </a>
+            </div>
+        </div>
+    `;
+
+    if (containers[item.category]) {
+        containers[item.category].innerHTML += card;
+    }
+});
+
     </script>
 
     <!-- Képnagyító, Header Scroll & Mobil Menü Logika -->
