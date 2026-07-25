@@ -103,6 +103,21 @@
 
         input:focus, select:focus { border-color: var(--accent-gold); }
 
+        .image-preview-box {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .image-preview-box img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border: 1px solid var(--border-color);
+            display: none;
+        }
+
         .btn-add {
             width: 100%; padding: 14px; background: var(--accent-gold);
             color: var(--bg-color); border: none; text-transform: uppercase;
@@ -192,9 +207,17 @@
                         </div>
                     </div>
 
+                    <!-- Képválasztó a kepek/ mappából -->
                     <div class="form-group">
-                        <label for="img">Kép Link (URL)</label>
-                        <input type="url" id="img" required placeholder="https://images.unsplash.com/...">
+                        <label for="imgSelect">Kép Kiválasztása (kepek/ mappa)</label>
+                        <select id="imgSelect" required onchange="previewSelectedImage(this.value)">
+                            <option value="">-- Válassz képet a kepek/ mappából --</option>
+                        </select>
+
+                        <div class="image-preview-box">
+                            <img id="imgPreview" src="" alt="Előnézet">
+                            <span id="previewText" style="font-size:0.8rem; color:var(--text-secondary);"></span>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -232,6 +255,41 @@
 
         const ADMIN_PASSWORD = "admin123";
 
+        // ITT ADHATOD MEG A KEPEK MAPPA FÁJLINEVEIT:
+        const imageFiles = [
+            "parfum1.jpg",
+            "parfum2.jpg",
+            "parfum3.jpg",
+            "noi_illat.png",
+            "ferfi_illat.jpg",
+            "unisex_illat.jpg",
+            "luxus_illat.jpg"
+        ];
+
+        // Legördülő menü feltöltése a képekkel
+        function populateImageDropdown() {
+            const select = document.getElementById('imgSelect');
+            imageFiles.forEach(file => {
+                const opt = document.createElement('option');
+                opt.value = `kepek/${file}`;
+                opt.textContent = file;
+                select.appendChild(opt);
+            });
+        }
+
+        window.previewSelectedImage = function(val) {
+            const previewImg = document.getElementById('imgPreview');
+            const previewText = document.getElementById('previewText');
+            if (val) {
+                previewImg.src = val;
+                previewImg.style.display = 'block';
+                previewText.textContent = `Kiválasztva: ${val}`;
+            } else {
+                previewImg.style.display = 'none';
+                previewText.textContent = '';
+            }
+        };
+
         if (sessionStorage.getItem('adminLoggedIn') === 'true') {
             showAdminPanel();
         }
@@ -249,6 +307,7 @@
         function showAdminPanel() {
             document.getElementById('login-modal').style.display = 'none';
             document.getElementById('admin-main').style.display = 'block';
+            populateImageDropdown();
             listenToProducts();
         }
 
@@ -281,7 +340,7 @@
                     itemEl.className = 'product-item';
                     itemEl.innerHTML = `
                         <div class="product-info">
-                            <img src="${item.img}" alt="${item.name}">
+                            <img src="${item.img}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/60?text=Hiányzik'">
                             <div class="product-details">
                                 <h4>${item.name} (${getCategoryLabel(item.category)})</h4>
                                 <p>30ml: ${item.price30} Ft | 50ml: ${item.price50} Ft | 70ml: ${item.price70} Ft</p>
@@ -307,14 +366,16 @@
                 price30: document.getElementById('price30').value,
                 price50: document.getElementById('price50').value,
                 price70: document.getElementById('price70').value,
-                img: document.getElementById('img').value,
+                img: document.getElementById('imgSelect').value,
                 notes: document.getElementById('notes').value
             };
 
             try {
                 await push(ref(database, 'perfumes'), newPerfume);
                 this.reset();
-                alert('Parfüm sikeresen mentve a Realtime Database-be!');
+                document.getElementById('imgPreview').style.display = 'none';
+                document.getElementById('previewText').textContent = '';
+                alert('Parfüm sikeresen mentve!');
             } catch (error) {
                 alert('Hiba mentéskor: ' + error.message);
             } finally {
