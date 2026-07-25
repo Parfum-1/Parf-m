@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Kezelőfelület — Misi’s Exclusive Parfümök</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #0d0d0d;
+            --card-bg: #141414;
+            --accent-gold: #d4af37;
+            --text-primary: #f8f8f8;
+            --text-secondary: #a0a0a0;
+            --border-color: rgba(212, 175, 55, 0.3);
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'Montserrat', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            padding: 40px 20px;
+        }
+
+        .login-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(13, 13, 13, 0.95);
+            backdrop-filter: blur(15px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999;
+        }
+
+        .login-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 40px; width: 100%; max-width: 400px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+        }
+
+        .login-box h2 {
+            font-family: var(--font-serif);
+            color: var(--accent-gold); font-size: 1.8rem; margin-bottom: 10px; font-weight: 400;
+        }
+
+        .login-box p { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 25px; }
+        .error-msg { color: #e74c3c; font-size: 0.8rem; margin-top: 10px; display: none; }
+
+        .admin-content { display: none; }
+        .container { max-width: 900px; margin: 0 auto; }
+
+        .header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px; margin-bottom: 40px;
+        }
+
+        h1 { font-family: var(--font-serif); color: var(--accent-gold); font-size: 2rem; font-weight: 400; }
+
+        .nav-links { display: flex; gap: 20px; align-items: center; }
+
+        .back-btn {
+            color: var(--text-secondary); text-decoration: none; font-size: 0.85rem;
+            text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s;
+        }
+
+        .back-btn:hover { color: var(--accent-gold); }
+
+        .logout-btn {
+            background: transparent; border: 1px solid rgba(255,255,255,0.2);
+            color: var(--text-secondary); padding: 6px 14px; cursor: pointer;
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .logout-btn:hover { border-color: #a32a2a; color: #a32a2a; }
+
+        .admin-card {
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            padding: 30px; margin-bottom: 40px;
+        }
+
+        .form-row { display: flex; gap: 15px; }
+        .form-row .form-group { flex: 1; }
+        .form-group { margin-bottom: 20px; text-align: left; }
+
+        label {
+            display: block; margin-bottom: 8px; color: var(--text-secondary);
+            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        input, select {
+            width: 100%; padding: 12px 15px; background: #000;
+            border: 1px solid rgba(255,255,255,0.1); color: #fff;
+            font-family: var(--font-sans); font-size: 0.95rem; outline: none;
+        }
+
+        input:focus, select:focus { border-color: var(--accent-gold); }
+
+        .btn-add {
+            width: 100%; padding: 14px; background: var(--accent-gold);
+            color: var(--bg-color); border: none; text-transform: uppercase;
+            letter-spacing: 2px; font-weight: 600; cursor: pointer;
+        }
+
+        .btn-add:hover { opacity: 0.9; }
+
+        .product-item {
+            display: flex; align-items: center; justify-content: space-between;
+            background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05);
+            padding: 15px; margin-bottom: 15px;
+        }
+
+        .product-item img { width: 60px; height: 60px; object-fit: cover; margin-right: 15px; }
+        .product-info { display: flex; align-items: center; flex-grow: 1; }
+        .product-details h4 { font-family: var(--font-serif); font-size: 1.2rem; }
+        .product-details p { font-size: 0.8rem; color: var(--text-secondary); }
+
+        .btn-delete {
+            background: #a32a2a; color: #fff; border: none;
+            padding: 8px 15px; cursor: pointer; font-size: 0.8rem;
+        }
+
+        .btn-delete:hover { background: #d32f2f; }
+    </style>
+</head>
+<body>
+
+    <div class="login-overlay" id="login-modal">
+        <div class="login-box">
+            <h2>Misi’s Admin</h2>
+            <p>A folytatáshoz adja meg az adminisztrátori jelszót.</p>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="password">Jelszó</label>
+                    <input type="password" id="password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn-add">Belépés</button>
+                <div class="error-msg" id="error-msg">Hibás jelszó!</div>
+            </form>
+        </div>
+    </div>
+
+    <div class="admin-content" id="admin-main">
+        <div class="container">
+            <div class="header">
+                <h1>Misi’s Admin Panel</h1>
+                <div class="nav-links">
+                    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Weboldal</a>
+                    <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Kijelentkezés</button>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <h2 style="font-family: var(--font-serif); margin-bottom: 20px; font-weight: 400;">Új Parfüm Hozzáadása</h2>
+                <form id="add-perfume-form">
+                    <div class="form-group">
+                        <label for="name">Parfüm Neve</label>
+                        <input type="text" id="name" required placeholder="pl. Royal Amber">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Kategória</label>
+                        <select id="category" required>
+                            <option value="women">Női Illat</option>
+                            <option value="men">Férfi Illat</option>
+                            <option value="unisex">Unisex Illat</option>
+                            <option value="luxury">Luxus Kollekció</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="price30">Ár — 30ml (Ft)</label>
+                            <input type="text" id="price30" required placeholder="28.000">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="price50">Ár — 50ml (Ft)</label>
+                            <input type="text" id="price50" required placeholder="38.000">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="price70">Ár — 70ml (Ft)</label>
+                            <input type="text" id="price70" required placeholder="52.000">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="img">Kép Link (URL)</label>
+                        <input type="url" id="img" required placeholder="https://images.unsplash.com/...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Illatjegyek</label>
+                        <input type="text" id="notes" placeholder="pl. Jázmin, vanília, szantálfa">
+                    </div>
+
+                    <button type="submit" class="btn-add" id="submit-btn">Parfüm Mentése</button>
+                </form>
+            </div>
+
+            <h2 style="font-family: var(--font-serif); margin-bottom: 20px; font-weight: 400;">Adatbázisban lévő Parfümök</h2>
+            <div id="admin-product-list"></div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK (Realtime Database) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDhgS9xqcRYyRVrGd_Rn3_6EXJwjCXAAtY",
+            authDomain: "parfum1-81d06.firebaseapp.com",
+            databaseURL: "https://parfum1-81d06-default-rtdb.firebaseio.com",
+            projectId: "parfum1-81d06",
+            storageBucket: "parfum1-81d06.firebasestorage.app",
+            messagingSenderId: "618373463374",
+            appId: "1:618373463374:web:1f9f06d0f1c0ff3d49b21f",
+            measurementId: "G-T77590LJFZ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        const ADMIN_PASSWORD = "admin123";
+
+        if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+            showAdminPanel();
+        }
+
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (document.getElementById('password').value === ADMIN_PASSWORD) {
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                showAdminPanel();
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+            }
+        });
+
+        function showAdminPanel() {
+            document.getElementById('login-modal').style.display = 'none';
+            document.getElementById('admin-main').style.display = 'block';
+            listenToProducts();
+        }
+
+        window.logout = function() {
+            sessionStorage.removeItem('adminLoggedIn');
+            location.reload();
+        }
+
+        function getCategoryLabel(cat) {
+            const labels = { women: 'Női', men: 'Férfi', unisex: 'Unisex', luxury: 'Luxus' };
+            return labels[cat] || cat;
+        }
+
+        function listenToProducts() {
+            const list = document.getElementById('admin-product-list');
+            const perfumesRef = ref(database, 'perfumes');
+
+            onValue(perfumesRef, (snapshot) => {
+                list.innerHTML = '';
+                const data = snapshot.val();
+
+                if (!data) {
+                    list.innerHTML = '<p style="color: var(--text-secondary);">Még nincs egyetlen parfüm sem az adatbázisban.</p>';
+                    return;
+                }
+
+                Object.keys(data).forEach((key) => {
+                    const item = data[key];
+                    const itemEl = document.createElement('div');
+                    itemEl.className = 'product-item';
+                    itemEl.innerHTML = `
+                        <div class="product-info">
+                            <img src="${item.img}" alt="${item.name}">
+                            <div class="product-details">
+                                <h4>${item.name} (${getCategoryLabel(item.category)})</h4>
+                                <p>30ml: ${item.price30} Ft | 50ml: ${item.price50} Ft | 70ml: ${item.price70} Ft</p>
+                                <p style="font-style: italic; color: #777;">${item.notes || ''}</p>
+                            </div>
+                        </div>
+                        <button class="btn-delete" onclick="deletePerfume('${key}')"><i class="fas fa-trash"></i> Törlés</button>
+                    `;
+                    list.appendChild(itemEl);
+                });
+            });
+        }
+
+        document.getElementById('add-perfume-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.innerText = 'Mentés...';
+            submitBtn.disabled = true;
+
+            const newPerfume = {
+                name: document.getElementById('name').value,
+                category: document.getElementById('category').value,
+                price30: document.getElementById('price30').value,
+                price50: document.getElementById('price50').value,
+                price70: document.getElementById('price70').value,
+                img: document.getElementById('img').value,
+                notes: document.getElementById('notes').value
+            };
+
+            try {
+                await push(ref(database, 'perfumes'), newPerfume);
+                this.reset();
+                alert('Parfüm sikeresen mentve a Realtime Database-be!');
+            } catch (error) {
+                alert('Hiba mentéskor: ' + error.message);
+            } finally {
+                submitBtn.innerText = 'Parfüm Mentése';
+                submitBtn.disabled = false;
+            }
+        });
+
+        window.deletePerfume = async function(key) {
+            if (confirm('Biztosan törölni szeretnéd ezt a parfümöt?')) {
+                try {
+                    await remove(ref(database, 'perfumes/' + key));
+                } catch (error) {
+                    alert('Hiba törléskor: ' + error.message);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
