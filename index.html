@@ -399,6 +399,138 @@
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
         }
 
+        /* Vásárlói Vélemények Szekció Stílusa */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+            margin-bottom: 50px;
+        }
+
+        .testimonial-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 4px;
+            position: relative;
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .testimonial-card:hover {
+            border-color: var(--border-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .testimonial-card i.fa-quote-left {
+            color: var(--accent-gold);
+            font-size: 1.5rem;
+            opacity: 0.4;
+            margin-bottom: 15px;
+        }
+
+        .testimonial-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .testimonial-author {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        .testimonial-stars {
+            color: var(--accent-gold);
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+
+        /* Vélemény Író Űrlap Stílusa */
+        .review-form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 40px;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .review-form-container h3 {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 25px;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            border-radius: 3px;
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-review-btn {
+            width: 100%;
+            padding: 14px;
+            background: transparent;
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: var(--transition-smooth);
+            font-weight: 500;
+        }
+
+        .submit-review-btn:hover {
+            background: var(--accent-gold);
+            color: var(--bg-color);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+
         /* Közösségi Média Lebegő Konténer */
         .social-floating-container {
             position: fixed;
@@ -541,7 +673,7 @@
             }
 
             nav.active {
-                max-height: 300px;
+                max-height: 350px;
             }
 
             nav ul {
@@ -562,62 +694,8 @@
             .social-text { display: none; }
             .social-widget { padding: 5px; border-radius: 50%; }
             .social-floating-container { bottom: 20px; right: 20px; }
+            .review-form-container { padding: 20px; }
         }
-
-        /* Vásárlói Vélemények Szekció */
-.testimonials-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    margin-top: 40px;
-}
-
-.testimonial-card {
-    background: var(--card-bg);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 30px;
-    border-radius: 4px;
-    position: relative;
-    transition: var(--transition-smooth);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.testimonial-card:hover {
-    border-color: var(--border-color);
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-.testimonial-card i.fa-quote-left {
-    color: var(--accent-gold);
-    font-size: 1.5rem;
-    opacity: 0.4;
-    margin-bottom: 15px;
-}
-
-.testimonial-text {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    font-style: italic;
-    margin-bottom: 20px;
-    line-height: 1.5;
-}
-
-.testimonial-author {
-    font-family: var(--font-serif);
-    font-size: 1.1rem;
-    color: #fff;
-    letter-spacing: 1px;
-}
-
-.testimonial-stars {
-    color: var(--accent-gold);
-    font-size: 0.8rem;
-    margin-top: 5px;
-}
-
     </style>
 </head>
 <body>
@@ -659,6 +737,7 @@
                 <li><a href="#men" onclick="closeMenu()">Férfi</a></li>
                 <li><a href="#unisex" onclick="closeMenu()">Unisex</a></li>
                 <li><a href="#luxury" onclick="closeMenu()" style="color: var(--accent-gold);">Luxus</a></li>
+                <li><a href="#reviews" onclick="closeMenu()">Vélemények</a></li>
                 <li><a href="admin.html" onclick="closeMenu()" style="opacity: 0.7;"><i class="fas fa-cog"></i> Admin</a></li>
             </ul>
         </nav>
@@ -709,48 +788,44 @@
         <div class="products-grid" id="luxury-products"></div>
     </section>
 
-        <!-- Vásárlói Vélemények Szekció -->
+    <!-- Vásárlói Vélemények Szekció -->
     <section id="reviews">
         <div class="section-title">
             <h2>Vásárlói Vélemények</h2>
             <div></div>
         </div>
-        <div class="testimonials-grid">
-            <div class="testimonial-card">
-                <div>
-                    <i class="fas fa-quote-left"></i>
-                    <p class="testimonial-text">"Hihetetlenül tartós az illat, és pontosan azt kaptam, amit vártam! Bizalmas és gyors ügyintézés volt Messengeren."</p>
-                </div>
-                <div>
-                    <div class="testimonial-author">Kovács Eszter</div>
-                    <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                </div>
-            </div>
+        
+        <!-- Dinamikus vélemények listája -->
+        <div class="testimonials-grid" id="reviews-grid">
+            <!-- Ide tölti be a Firebase-ből a véleményeket -->
+        </div>
 
-            <div class="testimonial-card">
-                <div>
-                    <i class="fas fa-quote-left"></i>
-                    <p class="testimonial-text">"A luxus kategóriából rendeltem egy üveggel. Elképesztő elegáns illat, az egész nap velem maradt. Csak ajánlani tudom Misit!"</p>
+        <!-- Új vélemény írása űrlap -->
+        <div class="review-form-container">
+            <h3>Írd meg véleményed!</h3>
+            <form id="reviewForm" onsubmit="submitReview(event)">
+                <div class="form-group">
+                    <label for="reviewerName">Neved</label>
+                    <input type="text" id="reviewerName" class="form-control" required placeholder="Pl. Kovács Anna">
                 </div>
-                <div>
-                    <div class="testimonial-author">Nagy Péter</div>
-                    <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <div class="form-group">
+                    <label for="reviewText">Véleményed az illatokról / szolgáltatásról</label>
+                    <textarea id="reviewText" class="form-control" required placeholder="Írd le a tapasztalatodat..."></textarea>
                 </div>
-            </div>
-
-            <div class="testimonial-card">
-                <div>
-                    <i class="fas fa-quote-left"></i>
-                    <p class="testimonial-text">"Gyors kiszállítás, gyönyörű csomagolás és prémium minőség. Biztosan fogok még innen rendelni ajándékba is."</p>
+                <div class="form-group">
+                    <label for="reviewRating">Értékelés (csillag)</label>
+                    <select id="reviewRating" class="form-control">
+                        <option value="5">⭐⭐⭐⭐⭐ (5 csillag)</option>
+                        <option value="4">⭐⭐⭐⭐ (4 csillag)</option>
+                        <option value="3">⭐⭐⭐ (3 csillag)</option>
+                        <option value="2">⭐⭐ (2 csillag)</option>
+                        <option value="1">⭐ (1 csillag)</option>
+                    </select>
                 </div>
-                <div>
-                    <div class="testimonial-author">Szabó Virág</div>
-                    <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                </div>
-            </div>
+                <button type="submit" class="submit-review-btn">Vélemény elküldése</button>
+            </form>
         </div>
     </section>
-
 
     <footer>
         <p>&copy; 2026 Misi’s Exclusive Parfümök. Minden jog fenntartva.</p>
@@ -765,7 +840,7 @@
     <!-- Firebase SDK (Realtime Database) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, onValue, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDhgS9xqcRYyRVrGd_Rn3_6EXJwjCXAAtY",
@@ -800,7 +875,6 @@
 
             Object.keys(data).forEach(key => {
                 const item = data[key];
-                
                 const messengerUrl = "https://www.facebook.com/profile.php?id=61572601478957";
 
                 const card = `
@@ -846,6 +920,62 @@
                 }
             });
         });
+
+        // Vélemények betöltése Firebase-ből
+        const reviewsRef = ref(database, 'reviews');
+        const reviewsGrid = document.getElementById('reviews-grid');
+
+        onValue(reviewsRef, (snapshot) => {
+            reviewsGrid.innerHTML = '';
+            const data = snapshot.val();
+            
+            if (!data) {
+                reviewsGrid.innerHTML = '<p style="color:#777; grid-column:1/-1; text-align:center;">Még nincsenek vélemények. Írd meg te az elsőt!</p>';
+                return;
+            }
+
+            Object.keys(data).forEach(key => {
+                const rev = data[key];
+                let starsHtml = '';
+                const ratingNum = parseInt(rev.rating) || 5;
+                for (let i = 0; i < ratingNum; i++) {
+                    starsHtml += '<i class="fas fa-star"></i>';
+                }
+
+                const reviewCard = `
+                    <div class="testimonial-card">
+                        <div>
+                            <i class="fas fa-quote-left"></i>
+                            <p class="testimonial-text">"${rev.text}"</p>
+                        </div>
+                        <div>
+                            <div class="testimonial-author">${rev.name}</div>
+                            <div class="testimonial-stars">${starsHtml}</div>
+                        </div>
+                    </div>
+                `;
+                reviewsGrid.innerHTML += reviewCard;
+            });
+        });
+
+        // Vélemény küldése funkció globálissá tétele, hogy a HTML onsubmit elérje
+        window.submitReview = function(event) {
+            event.preventDefault();
+            const name = document.getElementById('reviewerName').value;
+            const text = document.getElementById('reviewText').value;
+            const rating = document.getElementById('reviewRating').value;
+
+            push(reviewsRef, {
+                name: name,
+                text: text,
+                rating: rating
+            }).then(() => {
+                alert('Köszönjük a véleményedet! Sikeresen elküldve.');
+                document.getElementById('reviewForm').reset();
+            }).catch((error) => {
+                alert('Hiba történt a küldés során: ' + error.message);
+            });
+        }
     </script>
 
     <!-- Képnagyító, Header Scroll & Mobil Menü Logika -->
