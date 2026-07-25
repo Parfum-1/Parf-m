@@ -563,6 +563,61 @@
             .social-widget { padding: 5px; border-radius: 50%; }
             .social-floating-container { bottom: 20px; right: 20px; }
         }
+
+        /* Vásárlói Vélemények Szekció */
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.testimonial-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 30px;
+    border-radius: 4px;
+    position: relative;
+    transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.testimonial-card:hover {
+    border-color: var(--border-color);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.testimonial-card i.fa-quote-left {
+    color: var(--accent-gold);
+    font-size: 1.5rem;
+    opacity: 0.4;
+    margin-bottom: 15px;
+}
+
+.testimonial-text {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.testimonial-author {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+.testimonial-stars {
+    color: var(--accent-gold);
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+
     </style>
 </head>
 <body>
@@ -653,6 +708,49 @@
         </div>
         <div class="products-grid" id="luxury-products"></div>
     </section>
+
+        <!-- Vásárlói Vélemények Szekció -->
+    <section id="reviews">
+        <div class="section-title">
+            <h2>Vásárlói Vélemények</h2>
+            <div></div>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div>
+                    <i class="fas fa-quote-left"></i>
+                    <p class="testimonial-text">"Hihetetlenül tartós az illat, és pontosan azt kaptam, amit vártam! Bizalmas és gyors ügyintézés volt Messengeren."</p>
+                </div>
+                <div>
+                    <div class="testimonial-author">Kovács Eszter</div>
+                    <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                </div>
+            </div>
+
+            <div class="testimonial-card">
+                <div>
+                    <i class="fas fa-quote-left"></i>
+                    <p class="testimonial-text">"A luxus kategóriából rendeltem egy üveggel. Elképesztő elegáns illat, az egész nap velem maradt. Csak ajánlani tudom Misit!"</p>
+                </div>
+                <div>
+                    <div class="testimonial-author">Nagy Péter</div>
+                    <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                </div>
+            </div>
+
+            <div class="testimonial-card">
+                <div>
+                    <i class="fas fa-quote-left"></i>
+                    <p class="testimonial-text">"Gyors kiszállítás, gyönyörű csomagolás és prémium minőség. Biztosan fogok még innen rendelni ajándékba is."</p>
+                </div>
+                <div>
+                    <div class="testimonial-author">Szabó Virág</div>
+                    <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 
     <footer>
         <p>&copy; 2026 Misi’s Exclusive Parfümök. Minden jog fenntartva.</p>
