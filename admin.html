@@ -241,12 +241,10 @@
                         </div>
                     </div>
 
-                    <!-- Képválasztó a kepek/ mappából -->
+                    <!-- Kép feltöltése számítógépről -->
                     <div class="form-group">
-                        <label for="imgSelect">Kép Kiválasztása (kepek/ mappa)</label>
-                        <select id="imgSelect" required onchange="previewSelectedImage(this.value)">
-                            <option value="">-- Válassz képet a kepek/ mappából --</option>
-                        </select>
+                        <label for="imageFile">Parfüm Képe (Feltöltés számítógépről)</label>
+                        <input type="file" id="imageFile" accept="image/*">
 
                         <div class="image-preview-box">
                             <img id="imgPreview" src="" alt="Előnézet">
@@ -291,50 +289,25 @@
         const database = getDatabase(app);
 
         const ADMIN_PASSWORD = "admin123";
+        let base64ImageString = "";
 
-        // ITT ADHATOD MEG A KEPEK MAPPA FÁJLINEVEIT:
-        const imageFiles = [
-            "004.PNG",
-            "129.png",
-            "019.png",
-            "094.png",
-            "131.png",
-            "001.png",
-            "140.png",
-            "006.png",
-            "133.png",
-            "Multiverse.png",
-            "MytologikErmes.png",
-            "Mytologik - Zeusz.png",
-            "MytologikMedusa.png",
-            "137.png"
-        ];
-
-        // Legördülő menü feltöltése a képekkel
-        function populateImageDropdown() {
-            const select = document.getElementById('imgSelect');
-            // Tisztítás az újratöltés megelőzésére
-            select.innerHTML = '<option value="">-- Válassz képet a kepek/ mappából --</option>';
-            imageFiles.forEach(file => {
-                const opt = document.createElement('option');
-                opt.value = `kepek/${file}`;
-                opt.textContent = file;
-                select.appendChild(opt);
-            });
-        }
-
-        window.previewSelectedImage = function(val) {
+        // Fájl kiválasztásakor átalakítjuk Base64 szöveggé
+        document.getElementById('imageFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
             const previewImg = document.getElementById('imgPreview');
             const previewText = document.getElementById('previewText');
-            if (val) {
-                previewImg.src = val;
-                previewImg.style.display = 'block';
-                previewText.textContent = `Kiválasztva: ${val}`;
-            } else {
-                previewImg.style.display = 'none';
-                previewText.textContent = '';
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(uploadEvent) {
+                    base64ImageString = uploadEvent.target.result;
+                    previewImg.src = base64ImageString;
+                    previewImg.style.display = 'block';
+                    previewText.textContent = `Kiválasztva: ${file.name}`;
+                };
+                reader.readAsDataURL(file);
             }
-        };
+        });
 
         if (sessionStorage.getItem('adminLoggedIn') === 'true') {
             showAdminPanel();
@@ -353,7 +326,6 @@
         function showAdminPanel() {
             document.getElementById('login-modal').style.display = 'none';
             document.getElementById('admin-main').style.display = 'block';
-            populateImageDropdown();
             listenToProducts();
         }
 
@@ -367,7 +339,6 @@
             return labels[cat] || cat;
         }
 
-        // Globális objektum az elemek gyors eléréséhez szerkesztésnél
         let loadedPerfumes = {};
 
         function listenToProducts() {
@@ -390,7 +361,7 @@
                     itemEl.className = 'product-item';
                     itemEl.innerHTML = `
                         <div class="product-info">
-                            <img src="${item.img}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/60?text=Hiányzik'">
+                            <img src="${item.img || ''}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/60?text=Nincs+kep'">
                             <div class="product-details">
                                 <h4>${item.name} (${getCategoryLabel(item.category)})</h4>
                                 <p>30ml: ${item.price30 || '-'} Ft | 50ml: ${item.price50 || '-'} Ft | 70ml: ${item.price70 || '-'} Ft | 100ml: ${item.price100 || '-'} Ft</p>
@@ -407,7 +378,6 @@
             });
         }
 
-        // Parfüm betöltése szerkesztésre
         window.editPerfume = function(key) {
             const perfume = loadedPerfumes[key];
             if (!perfume) return;
@@ -419,20 +389,29 @@
             document.getElementById('price50').value = perfume.price50 || '';
             document.getElementById('price70').value = perfume.price70 || '';
             document.getElementById('price100').value = perfume.price100 || '';
-            document.getElementById('imgSelect').value = perfume.img || '';
             document.getElementById('notes').value = perfume.notes || '';
 
-            previewSelectedImage(perfume.img);
+            const previewImg = document.getElementById('imgPreview');
+            const previewText = document.getElementById('previewText');
+            
+            if (perfume.img) {
+                previewImg.src = perfume.img;
+                previewImg.style.display = 'block';
+                previewText.textContent = 'Jelenlegi kép betöltve';
+            } else {
+                previewImg.style.display = 'none';
+                previewText.textContent = '';
+            }
+
+            base64ImageString = "";
 
             document.getElementById('form-title').innerText = 'Parfüm Módosítása';
             document.getElementById('submit-btn').innerText = 'Módosítások Mentése';
             document.getElementById('cancel-btn').style.display = 'block';
 
-            // Gördülés a formhoz
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Form visszaállítása alaphelyzetbe
         window.resetForm = function() {
             document.getElementById('add-perfume-form').reset();
             document.getElementById('edit-id').value = '';
@@ -441,6 +420,7 @@
             document.getElementById('cancel-btn').style.display = 'none';
             document.getElementById('imgPreview').style.display = 'none';
             document.getElementById('previewText').textContent = '';
+            base64ImageString = "";
         }
 
         document.getElementById('add-perfume-form').addEventListener('submit', async function(e) {
@@ -451,6 +431,11 @@
             submitBtn.innerText = 'Mentés...';
             submitBtn.disabled = true;
 
+            let finalImg = base64ImageString;
+            if (!finalImg && editId && loadedPerfumes[editId]) {
+                finalImg = loadedPerfumes[editId].img;
+            }
+
             const perfumeData = {
                 name: document.getElementById('name').value,
                 category: document.getElementById('category').value,
@@ -458,17 +443,15 @@
                 price50: document.getElementById('price50').value,
                 price70: document.getElementById('price70').value,
                 price100: document.getElementById('price100').value,
-                img: document.getElementById('imgSelect').value,
+                img: finalImg || '',
                 notes: document.getElementById('notes').value
             };
 
             try {
                 if (editId) {
-                    // Módosítás létező elemnél
                     await update(ref(database, 'perfumes/' + editId), perfumeData);
                     alert('Parfüm sikeresen frissítve!');
                 } else {
-                    // Új elem hozzáadása
                     await push(ref(database, 'perfumes'), perfumeData);
                     alert('Parfüm sikeresen mentve!');
                 }
@@ -477,6 +460,7 @@
                 alert('Hiba mentéskor: ' + error.message);
             } finally {
                 submitBtn.disabled = false;
+                submitBtn.innerText = 'Parfüm Mentése';
             }
         });
 
@@ -490,7 +474,5 @@
             }
         }
     </script>
-</body>
-</html>
 </body>
 </html>
