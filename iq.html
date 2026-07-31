@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Komplex IQ Felmérő és Elemző</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        h1 {
+            text-align: center;
+            color: #4a5568;
+            margin-bottom: 20px;
+        }
+        .question {
+            font-size: 1.05rem;
+            font-weight: 650;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #2d3748;
+        }
+        .options label {
+            display: block;
+            background: #edf2f7;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: background 0.2s;
+        }
+        .options label:hover {
+            background: #e2e8f0;
+        }
+        .options input {
+            margin-right: 8px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            background: #48bb78;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #38a169;
+        }
+        #result {
+            display: none;
+            text-align: center;
+        }
+        #result h2 {
+            color: #2b6cb0;
+        }
+        .score-box {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #d69e2e;
+            margin: 10px 0;
+        }
+        .iq-box {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #e53e3e;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Intelligencia és Logikai Felmérő</h1>
+    
+    <div id="quiz-form">
+        
+        <!-- 1 -->
+        <div class="question">1. Melyik szám következik: 2, 4, 8, 16, ?</div>
+        <div class="options">
+            <label><input type="radio" name="q1" value="0"> 20</label>
+            <label><input type="radio" name="q1" value="1"> 32 (Helyes)</label>
+            <label><input type="radio" name="q1" value="0.5"> 24 (Közelítő)</label>
+            <label><input type="radio" name="q1" value="0"> 30</label>
+        </div>
+
+        <!-- 2 -->
+        <div class="question">2. Ha minden rózsa virág, és néhány virág elhervad gyorsan, akkor:</div>
+        <div class="options">
+            <label><input type="radio" name="q2" value="0"> Minden rózsa elhervad gyorsan.</label>
+            <label><input type="radio" name="q2" value="0.5"> Néhány rózsa nem virág. (Közelítő)</label>
+            <label><input type="radio" name="q2" value="1"> Néhány virág, ami elhervad, lehet rózsa. (Helyes)</label>
+            <label><input type="radio" name="q2" value="0"> Egyik sem igaz biztosan.</label>
+        </div>
+
+        <!-- 3 -->
+        <div class="question">3. Kakukktojás: Melyik nem illik a többi közé?</div>
+        <div class="options">
+            <label><input type="radio" name="q3" value="0"> Alma</label>
+            <label><input type="radio" name="q3" value="0"> Körte</label>
+            <label><input type="radio" name="q3" value="1"> Répa (Helyes)</label>
+            <label><input type="radio" name="q3" value="0"> Barack</label>
+        </div>
+
+        <!-- 4 -->
+        <div class="question">4. Mennyi 3-mal osztható az első 10 pozitív egész szám közül?</div>
+        <div class="options">
+            <label><input type="radio" name="q4" value="0.5"> 2 (Közelítő)</label>
+            <label><input type="radio" name="q4" value="1"> 3 (Helyes)</label>
+            <label><input type="radio" name="q4" value="0"> 4</label>
+            <label><input type="radio" name="q4" value="0"> 5</label>
+        </div>
+
+        <!-- 5 -->
+        <div class="question">5. Melyik betű következik a sorban: A, C, F, J, O, ?</div>
+        <div class="options">
+            <label><input type="radio" name="q5" value="0.5"> R (Közelítő)</label>
+            <label><input type="radio" name="q5" value="0"> S</label>
+            <label><input type="radio" name="q5" value="1"> U (Helyes)</label>
+            <label><input type="radio" name="q5" value="0"> T</label>
+        </div>
+
+        <!-- 6 -->
+        <div class="question">6. Ha 5 gép 5 perc alatt készít el 5 terméket, mennyi idő alatt készít el 100 gép 100 terméket?</div>
+        <div class="options">
+            <label><input type="radio" name="q6" value="1"> 5 perc (Helyes)</label>
+            <label><input type="radio" name="q6" value="0"> 100 perc</label>
+            <label><input type="radio" name="q6" value="0.5"> 25 perc (Közelítő)</label>
+            <label><input type="radio" name="q6" value="0"> 50 perc</label>
+        </div>
+
+        <!-- 7 -->
+        <div class="question">7. Melyik szó rokon értelmű a „fukar” szóval?</div>
+        <div class="options">
+            <label><input type="radio" name="q7" value="0"> Bőkezű</label>
+            <label><input type="radio" name="q7" value="1"> Fösvény (Helyes)</label>
+            <label><input type="radio" name="q7" value="0.5"> Pazarló (Közelítő)</label>
+            <label><input type="radio" name="q7" value="0"> Jámbor</label>
+        </div>
+
+        <!-- 8 -->
+        <div class="question">8. Egy tóban a liliomlevelek száma naponta duplázódik. Ha 48 nap alatt borítják be az egész tavat, mennyi idő alatt borítják be a felét?</div>
+        <div class="options">
+            <label><input type="radio" name="q8" value="0.5"> 24 nap (Közelítő)</label>
+            <label><input type="radio" name="q8" value="0"> 46 nap</label>
+            <label><input type="radio" name="q8" value="1"> 47 nap (Helyes)</label>
+            <label><input type="radio" name="q8" value="0"> 40 nap</label>
+        </div>
+
+        <!-- 9 -->
+        <div class="question">9. Mi a következő szám a Fibonacci-sorozatban: 1, 1, 2, 3, 5, 8, 13, ?</div>
+        <div class="options">
+            <label><input type="radio" name="q9" value="0.5"> 18 (Közelítő)</label>
+            <label><input type="radio" name="q9" value="1"> 21 (Helyes)</label>
+            <label><input type="radio" name="q9" value="0"> 20</label>
+            <label><input type="radio" name="q9" value="0"> 26</label>
+        </div>
+
+        <!-- 10 -->
+        <div class="question">10. Melyik állítás logikai következménye ennek: „Ha süt a nap, akkor meleg van.”</div>
+        <div class="options">
+            <label><input type="radio" name="q10" value="0.5"> Ha nincs meleg, akkor süt a nap. (Közelítő)</label>
+            <label><input type="radio" name="q10" value="1"> Ha nincs meleg, akkor nem süt a nap. (Helyes)</label>
+            <label><input type="radio" name="q10" value="0"> Ha meleg van, akkor süt a nap.</label>
+            <label><input type="radio" name="q10" value="0"> Mindig meleg van, ha süt a nap.</label>
+        </div>
+
+        <!-- 11 -->
+        <div class="question">11. Melyik szám hiányzik a sorból: 3, 6, 12, 24, ?, 96</div>
+        <div class="options">
+            <label><input type="radio" name="q11" value="0.5"> 36 (Közelítő)</label>
+            <label><input type="radio" name="q11" value="0"> 42</label>
+            <label><input type="radio" name="q11" value="1"> 48 (Helyes)</label>
+            <label><input type="radio" name="q11" value="0"> 60</label>
+        </div>
+
+        <!-- 12 -->
+        <div class="question">12. Egy tégla súlya 1 kg plusz a saját súlyának a fele. Mennyi a tégla súlya?</div>
+        <div class="options">
+            <label><input type="radio" name="q12" value="0.5"> 1,5 kg (Közelítő)</label>
+            <label><input type="radio" name="q12" value="1"> 2 kg (Helyes)</label>
+            <label><input type="radio" name="q12" value="0"> 2,5 kg</label>
+            <label><input type="radio" name="q12" value="0"> 3 kg</label>
+        </div>
+
+        <!-- 13 -->
+        <div class="question">13. Melyik mértékegység nem illik a többi közé?</div>
+        <div class="options">
+            <label><input type="radio" name="q13" value="0"> Liter</label>
+            <label><input type="radio" name="q13" value="0.5"> Köbméter (Közelítő)</label>
+            <label><input type="radio" name="q13" value="1"> Kilogramm (Helyes)</label>
+            <label><input type="radio" name="q13" value="0"> Milliliter</label>
+        </div>
+
+        <!-- 14 -->
+        <div class="question">14. Hány hónapban van 28 nap az évben?</div>
+        <div class="options">
+            <label><input type="radio" name="q14" value="0"> 1</label>
+            <label><input type="radio" name="q14" value="0.5"> 2 (Közelítő)</label>
+            <label><input type="radio" name="q14" value="1"> 12 (Helyes)</label>
+            <label><input type="radio" name="q14" value="0"> Szökőévente változó</label>
+        </div>
+
+        <!-- 15 -->
+        <div class="question">15. Ha az óra szerint 3:15 van, mekkora szöget zár be a kismutató és a nagymutató?</div>
+        <div class="options">
+            <label><input type="radio" name="q15" value="0.5"> 0 fok (Közelítő)</label>
+            <label><input type="radio" name="q15" value="1"> 7,5 fok (Helyes)</label>
+            <label><input type="radio" name="q15" value="0"> 15 fok</label>
+            <label><input type="radio" name="q15" value="0"> 22,5 fok</label>
+        </div>
+
+        <!-- 16 -->
+        <div class="question">16. Melyik szópár mutat hasonló analógiát, mint a „Madár – Toll”?</div>
+        <div class="options">
+            <label><input type="radio" name="q16" value="1"> Hal – Pikkely (Helyes)</label>
+            <label><input type="radio" name="q16" value="0.5"> Kutya – Farok (Közelítő)</label>
+            <label><input type="radio" name="q16" value="0"> Fa – Gyökér</label>
+            <label><input type="radio" name="q16" value="0"> Ember – Ruha</label>
+        </div>
+
+        <!-- 17 -->
+        <div class="question">17. Mi a következő szám a sorban: 1, 4, 9, 16, 25, ?</div>
+        <div class="options">
+            <label><input type="radio" name="q17" value="0.5"> 30 (Közelítő)</label>
+            <label><input type="radio" name="q17" value="0"> 32</label>
+            <label><input type="radio" name="q17" value="1"> 36 (Helyes)</label>
+            <label><input type="radio" name="q17" value="0"> 49</label>
+        </div>
+
+        <!-- 18 -->
+        <div class="question">18. Egy apa 4 alkalommal olyan idős, mint a fia. 20 év múlva már csak kétszer olyan idős lesz. Hány éves most a fiú?</div>
+        <div class="options">
+            <label><input type="radio" name="q18" value="0.5"> 5 év (Közelítő)</label>
+            <label><input type="radio" name="q18" value="1"> 10 év (Helyes)</label>
+            <label><input type="radio" name="q18" value="0"> 12 év</label>
+            <label><input type="radio" name="q18" value="0"> 15 év</label>
+        </div>
+
+        <!-- 19 -->
+        <div class="question">19. Melyik kifejezés ellentétes az „optimista” szóval?</div>
+        <div class="options">
+            <label><input type="radio" name="q19" value="0.5"> Realista (Közelítő)</label>
+            <label><input type="radio" name="q19" value="1"> Pesszimista (Helyes)</label>
+            <label><input type="radio" name="q19" value="0"> Depressziós</label>
+            <label><input type="radio" name="q19" value="0"> Szigorú</label>
+        </div>
+
+        <!-- 20 -->
+        <div class="question">20. Melyik szám jön a sorban: 0, 2, 6, 12, 20, ?</div>
+        <div class="options">
+            <label><input type="radio" name="q20" value="0.5"> 28 (Közelítő)</label>
+            <label><input type="radio" name="q20" value="1"> 30 (Helyes)</label>
+            <label><input type="radio" name="q20" value="0"> 32</label>
+            <label><input type="radio" name="q20" value="0"> 36</label>
+        </div>
+
+        <!-- 21 -->
+        <div class="question">21. Ha három macska három egészet eszik meg három nap alatt, hány nap alatt eszik meg egy macska egy egészet?</div>
+        <div class="options">
+            <label><input type="radio" name="q21" value="0.5"> 1 nap (Közelítő)</label>
+            <label><input type="radio" name="q21" value="1"> 3 nap (Helyes)</label>
+            <label><input type="radio" name="q21" value="0"> 9 nap</label>
+            <label><input type="radio" name="q21" value="0"> 0,33 nap</label>
+        </div>
+
+        <!-- 22 -->
+        <div class="question">22. Melyik szóból kaphatjuk vissza ugyanazt a szót, ha hátulról olvassuk?</div>
+        <div class="options">
+            <label><input type="radio" name="q22" value="0.5"> Görög (Közelítő)</label>
+            <label><input type="radio" name="q22" value="0.5"> Radar (Közelítő)</label>
+            <label><input type="radio" name="q22" value="0.5"> Anna (Közelítő)</label>
+            <label><input type="radio" name="q22" value="1"> Mindegyik fenti szó (Helyes)</label>
+        </div>
+
+        <!-- 23 -->
+        <div class="question">23. Mennyi a kerülete egy olyan négyzetnek, amelynek a területe 36 négyzetcentiméter?</div>
+        <div class="options">
+            <label><input type="radio" name="q23" value="0.5"> 12 cm (Közelítő)</label>
+            <label><input type="radio" name="q23" value="1"> 24 cm (Helyes)</label>
+            <label><input type="radio" name="q23" value="0"> 36 cm</label>
+            <label><input type="radio" name="q23" value="0"> 18 cm</label>
+        </div>
+
+        <!-- 24 -->
+        <div class="question">24. Ha az angol ALPHABET szó betűit ábécé sorrendbe rendezzük, melyik betű lesz a középső?</div>
+        <div class="options">
+            <label><input type="radio" name="q24" value="0"> A</label>
+            <label><input type="radio" name="q24" value="1"> H (vagy megfelelő elem) (Helyes)</label>
+            <label><input type="radio" name="q24" value="0.5"> L (Közelítő)</label>
+            <label><input type="radio" name="q24" value="0"> T</label>
+        </div>
+
+        <!-- 25 -->
+        <div class="question">25. Melyik szám a kakukktojás: 2, 3, 5, 7, 9, 11?</div>
+        <div class="options">
+            <label><input type="radio" name="q25" value="0"> 2</label>
+            <label><input type="radio" name="q25" value="0.5"> 5 (Közelítő)</label>
+            <label><input type="radio" name="q25" value="1"> 9 (Helyes)</label>
+            <label><input type="radio" name="q25" value="0"> 11</label>
+        </div>
+
+        <!-- 26 -->
+        <div class="question">26. Egy mezőn 10 juh legel, közülük 9 megvakul. Hány juh marad a mezőn?</div>
+        <div class="options">
+            <label><input type="radio" name="q26" value="1"> 10 (Helyes)</label>
+            <label><input type="radio" name="q26" value="0.5"> 1 (Közelítő)</label>
+            <label><input type="radio" name="q26" value="0"> 0</label>
+            <label><input type="radio" name="q26" value="0"> 9</label>
+        </div>
+
+        <!-- 27 -->
+        <div class="question">27. Ha a hétfőt megelőző nap tegnap volt, akkor milyen nap lesz holnap?</div>
+        <div class="options">
+            <label><input type="radio" name="q27" value="0.5"> Vasárnap (Közelítő)</label>
+            <label><input type="radio" name="q27" value="0"> Hétfő</label>
+            <label><input type="radio" name="q27" value="1"> Kedd (Helyes)</label>
+            <label><input type="radio" name="q27" value="0"> Szerda</label>
+        </div>
+
+        <!-- 28 -->
+        <div class="question">28. Melyik alakzatnak van a legtöbb oldala?</div>
+        <div class="options">
+            <label><input type="radio" name="q28" value="0"> Háromszög</label>
+            <label><input type="radio" name="q28" value="0"> Ötszög</label>
+            <label><input type="radio" name="q28" value="0.5"> Nyolcszög (Közelítő)</label>
+            <label><input type="radio" name="q28" value="1"> Tizenkétszög (Helyes)</label>
+        </div>
+
+        <!-- 29 -->
+        <div class="question">29. Melyik szó folytatja helyesen a sort: Január, Március, Május, Július, ?</div>
+        <div class="options">
+            <label><input type="radio" name="q29" value="0.5"> Június (Közelítő)</label>
+            <label><input type="radio" name="q29" value="1"> Augusztus (Helyes)</label>
+            <label><input type="radio" name="q29" value="0"> Szeptember</label>
+            <label><input type="radio" name="q29" value="0"> Október</label>
+        </div>
+
+        <!-- 30 -->
+        <div class="question">30. Ha egy építkezésen két munkás két óra alatt ás ki egy gödröt, mennyi idő alatt ás ki fél gödröt egy munkás?</div>
+        <div class="options">
+            <label><input type="radio" name="q30" value="0.5"> Fél óra (Közelítő)</label>
+            <label><input type="radio" name="q30" value="0.5"> 1 óra (Közelítő)</label>
+            <label><input type="radio" name="q30" value="1"> 2 óra (Helyes)</label>
+            <label><input type="radio" name="q30" value="0"> 4 óra</label>
+        </div>
+
+        <button onclick="evaluateQuiz()">Eredmény kiértékelése</button>
+    </div>
+
+    <div id="result">
+        <h2>Eredmény</h2>
+        <div class="score-box" id="score-text"></div>
+        <div class="iq-box" id="iq-text"></div>
+        <p id="evaluation-desc"></p>
+        <button onclick="location.reload()">Újrakezdés</button>
+    </div>
+</div>
+
+<script>
+    function evaluateQuiz() {
+        let score = 0;
+        const totalQuestions = 30;
+        
+        for (let i = 1; i <= totalQuestions; i++) {
+            const selected = document.querySelector(`input[name="q${i}"]:checked`);
+            if (selected) {
+                score += parseFloat(selected.value);
+            }
+        }
+
+        // Becsült IQ számítás (70-től 145-ös skáláig)
+        // Alap IQ (70) + (Elért pont / Teljes pont) * 75
+        let estimatedIQ = Math.round(70 + (score / totalQuestions) * 75);
+        if (estimatedIQ > 145) estimatedIQ = 145;
+
+        document.getElementById('quiz-form').style.display = 'none';
+        document.getElementById('result').style.display = 'block';
+
+        document.getElementById('score-text').innerText = `Elért pontszám: ${score} / ${totalQuestions}`;
+        document.getElementById('iq-text').innerText = `Becsült IQ: ${estimatedIQ}`;
+
+        let description = "";
+        if (estimatedIQ >= 130) {
+            description = "Zseniális teljesítmény! Kiemelkedő logikai és problémamegoldó képességekkel rendelkezel.";
+        } else if (estimatedIQ >= 115) {
+            description = "Kiváló eredmény! Éles logika és átlagon felüli szellemi teljesítmény mutatkozik meg.";
+        } else if (estimatedIQ >= 100) {
+            description = "Átlagos vagy jó eredmény. Stabil gondolkodásmód, amely a legtöbb helyzetben megállja a helyét.";
+        } else {
+            description = "Fejleszthető terület. Rendszeres logikai és memóriafeladatok megoldásával tovább javíthatod az eredményed.";
+        }
+        document.getElementById('evaluation-desc').innerText = description;
+    }
+</script>
+
+</body>
+</html>
